@@ -1,0 +1,99 @@
+/* https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51 */
+
+.App {
+  overflow: hidden;
+}
+body {
+  background: #264653;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+  padding: 15px;
+  height: 5vh;
+  width: 100%;
+  background: #264653;
+  color: #e76f51;
+  position: fixed;
+}
+
+.navbar h1 {
+  left: 0;
+}
+
+.shearch {
+  padding-left: 20vw;
+}
+
+.shearch input[type="text"] {
+  border-radius: 10px;
+  padding: 10px;
+  width: 30vw;
+  color: #e76f51;
+  border: none;
+}
+
+.shearch input[type="text"]:focus {
+  outline: none;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25vw;
+  height: 100vh;
+  background: #264653;
+  color: #e76f51;
+}
+
+.rightContainer {
+  display: flex;
+  padding: 25px;
+  padding-top: 10vh;
+  background: #2a9d8f;
+  width: 75vw;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.addForm {
+  padding-top: 10vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page {
+  display: flex;
+}
+
+.categorie {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 5vh;
+  border: 2px solid #e9c46a;
+  border-radius: 25px;
+  background-color: #e9c46a;
+  color: #264653;
+}
+
+.categorie ul {
+  padding: 0;
+  margin: 0;
+}
+
+.categorie a {
+  text-decoration: none;
+  color: #264653;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
