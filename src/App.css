@@ -83,17 +83,30 @@ body {
 }
 
 .categorie ul {
-  padding: 0;
+  /* padding: 0; */
   margin: 0;
-}
-
-.categorie a {
-  text-decoration: none;
-  color: #264653;
 }
 
 .item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
+}
+.item {
+  position: relative;
+}
+
+.item h3 {
+  cursor: pointer;
+}
+
+.item h3:hover {
+  color: #e76f51;
+}
+
+.item span {
+  position: absolute;
+  right: -3vw;
+  cursor: pointer;
 }

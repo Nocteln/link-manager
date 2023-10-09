@@ -1,4 +1,6 @@
+import { useState } from "react";
 import "./App.css";
+import AddForm from "./components/AddForm";
 
 let cat = [
   {
@@ -26,12 +28,28 @@ let cat = [
 ];
 
 export default function App() {
+  const [items, setItems] = useState(cat);
+  function handleAddItems(item) {
+    setItems((prevItems) => {
+      return prevItems.map((category) => {
+        if (category.name === item.name) {
+          // Copie la catégorie actuelle et ajoute le nouveau lien
+          return {
+            ...category,
+            sites: [...category.sites, item.site],
+          };
+        }
+        return category;
+      });
+    });
+  }
+
   return (
     <div className="App">
       <NavBar />
       <div className="page">
-        <LeftContainer />
-        <RightContainer />
+        <LeftContainer onAddItem={handleAddItems} items={items} />
+        <RightContainer items={items} />
       </div>
     </div>
   );
@@ -53,40 +71,19 @@ function ShearchForm() {
   );
 }
 
-function AddForm() {
-  return (
-    <form className="addForm">
-      <h3>Ajouter un lien</h3>
-      <label htmlFor="lien">Lien :</label>
-      <input type="url" placeholder="https://..." id="lien" />
-      <label htmlFor="nom">Nom du lien :</label>
-      <input id="nom" type="text" placeholder="nom..." />
-      <label htmlFor="category">Séléctionner une categorie :</label>
-      <select id="category" name="category">
-        {cat.map((category, index) => (
-          <option key={index} value={category.name}>
-            {category.name}
-          </option>
-        ))}
-        <option value="autre">Autre</option>
-      </select>
-    </form>
-  );
-}
-
-function LeftContainer() {
+function LeftContainer({ onAddItem, items }) {
   return (
     <div className="leftContainer">
-      <AddForm />
+      <AddForm onAddItem={onAddItem} items={items} />
     </div>
   );
 }
 
-function RightContainer() {
+function RightContainer({ items }) {
   return (
     <div className="rightContainer">
-      {cat.map((cat) => {
-        return <Categorie cat={cat} />;
+      {items.map((cat) => {
+        return <Categorie cat={cat} key={cat.name} />;
       })}
     </div>
   );
@@ -98,7 +95,7 @@ function Categorie({ cat }) {
       <h2>{cat.name}</h2>
       <ul>
         {cat.sites.map((site) => {
-          return <Item site={site} />;
+          return <Item site={site} key={site.url} />;
         })}
       </ul>
     </div>
@@ -108,11 +105,10 @@ function Categorie({ cat }) {
 function Item({ site }) {
   return (
     <li className="item">
-      <div className="titre">
-        <h3>{site.name}</h3>
-        <span>❌</span>
-      </div>
-      <a href={site.url}>{site.url}</a>
+      {/* <div className="titre"> */}
+      <h3 href={site.url}>{site.name} </h3>
+      <span>❌</span>
+      {/* </div> */}
     </li>
   );
 }
