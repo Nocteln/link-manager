@@ -7,7 +7,6 @@ export default function AddForm({ onAddItem, items }) {
     items[0].name ? items[0].name : "Autre"
   );
 
-  console.log(items);
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -16,7 +15,7 @@ export default function AddForm({ onAddItem, items }) {
       return;
     }
 
-    const item = { name, site: { url, category } };
+    const item = { name: category, site: { url, name } };
 
     onAddItem(item);
 

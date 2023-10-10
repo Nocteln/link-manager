@@ -33,7 +33,6 @@ export default function App() {
     setItems((prevItems) => {
       return prevItems.map((category) => {
         if (category.name === item.name) {
-          // Copie la catégorie actuelle et ajoute le nouveau lien
           return {
             ...category,
             sites: [...category.sites, item.site],
@@ -44,12 +43,27 @@ export default function App() {
     });
   }
 
+  function handleDeleteItem(item, cat) {
+    console.log(item);
+    setItems((prevItems) => {
+      for (let i = 0; i < prevItems.length; i++) {
+        if (cat.name === prevItems[i].name) {
+          console.log("Item ", prevItems[i]);
+          prevItems[i].sites = prevItems[i].sites.filter(
+            (site) => site.url !== item.url
+          );
+        }
+      }
+      return prevItems;
+    });
+  }
+
   return (
     <div className="App">
       <NavBar />
       <div className="page">
         <LeftContainer onAddItem={handleAddItems} items={items} />
-        <RightContainer items={items} />
+        <RightContainer items={items} onDeleteItem={handleDeleteItem} />
       </div>
     </div>
   );
@@ -79,35 +93,44 @@ function LeftContainer({ onAddItem, items }) {
   );
 }
 
-function RightContainer({ items }) {
+function RightContainer({ items, onDeleteItem }) {
   return (
     <div className="rightContainer">
       {items.map((cat) => {
-        return <Categorie cat={cat} key={cat.name} />;
+        return (
+          <Categorie cat={cat} key={cat.name} onDeleteItem={onDeleteItem} />
+        );
       })}
     </div>
   );
 }
 
-function Categorie({ cat }) {
+function Categorie({ cat, onDeleteItem }) {
   return (
     <div className="categorie">
       <h2>{cat.name}</h2>
       <ul>
         {cat.sites.map((site) => {
-          return <Item site={site} key={site.url} />;
+          return (
+            <Item
+              site={site}
+              key={site.url}
+              onDeleteItem={onDeleteItem}
+              cat={cat}
+            />
+          );
         })}
       </ul>
     </div>
   );
 }
 
-function Item({ site }) {
+function Item({ site, onDeleteItem, cat }) {
   return (
     <li className="item">
       {/* <div className="titre"> */}
       <h3 href={site.url}>{site.name} </h3>
-      <span>❌</span>
+      <span onClick={() => onDeleteItem(site, cat)}>❌</span>
       {/* </div> */}
     </li>
   );
