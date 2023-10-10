@@ -54,9 +54,17 @@ body {
   padding: 25px;
   padding-top: 10vh;
   background: #2a9d8f;
-  width: 75vw;
+  width: 70vw;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.rightContainer .aucuneCat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-20%, -20%);
+  padding: 10px;
 }
 
 .addForm {

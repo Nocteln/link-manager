@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import AddForm from "./components/AddForm";
 import { LeftContainer, RightContainer } from "./components/Containers";
 
 let cat = [
@@ -29,7 +28,15 @@ let cat = [
 ];
 
 export default function App() {
-  const [items, setItems] = useState(cat);
+  // if (!localStorage.getItem("items")) {
+  //   localStorage.setItem("items", JSON.stringify(cat));
+  // }
+  const [items, setItems] = useState(
+    localStorage.getItem("item")
+      ? JSON.parse(localStorage.getItem("items"))
+      : []
+  );
+  console.log(items);
   function handleAddItems(item) {
     setItems((prevItems) => {
       return prevItems.map((category) => {
@@ -42,6 +49,7 @@ export default function App() {
         return category;
       });
     });
+    localStorage.setItem("items", JSON.stringify(items));
   }
 
   function handleDeleteItem(item, cat) {
@@ -53,17 +61,22 @@ export default function App() {
               (site) => site.url !== item.url
             );
             // Si la catégorie n'a plus de sites, ne la retournez pas
-            if (newSites.length === 0) return null;
+            if (newSites.length === 0) {
+              localStorage.setItem("items", "null");
+              return null;
+            }
             return { ...category, sites: newSites };
           }
           return category;
         })
         .filter(Boolean); // Supprimez les catégories nulles
     });
+    localStorage.setItem("items", JSON.stringify(items));
   }
 
   function handleAddCat(cat) {
     setItems((prev) => [...prev, cat]);
+    localStorage.setItem("items", JSON.stringify(items));
   }
 
   return (
@@ -97,27 +110,7 @@ function ShearchForm() {
   );
 }
 
-export function Categorie({ cat, onDeleteItem }) {
-  return (
-    <div className="categorie">
-      <h2>{cat.name}</h2>
-      <ul>
-        {cat.sites.map((site) => {
-          return (
-            <Item
-              site={site}
-              key={site.url}
-              onDeleteItem={onDeleteItem}
-              cat={cat}
-            />
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
-
-function Item({ site, onDeleteItem, cat }) {
+export function Item({ site, onDeleteItem, cat }) {
   return (
     <li className="item">
       {/* <div className="titre"> */}

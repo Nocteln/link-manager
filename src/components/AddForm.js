@@ -10,18 +10,20 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // if (name === "" || url === "" || category === "") {
-    //   alert("Veuillez remplir tous les champs");
-    //   return;
-    // }
+    if (name === "" || url === "" || category === "") {
+      alert("Veuillez remplir tous les champs");
+      return;
+    }
 
     const item = { name: category, site: { url, name } };
 
-    for (let i = 0; i < items.length; i++) {
-      for (let k = 0; k < items[i].sites.length; k++) {
-        if (items[i].name === category && items[i].sites[k].url === url) {
-          alert("Ce lien existe déjà");
-          return;
+    if (items !== "[]") {
+      for (let i = 0; i < items.length; i++) {
+        for (let k = 0; k < items[i].sites.length; k++) {
+          if (items[i].name === category && items[i].sites[k].url === url) {
+            alert("Ce lien existe déjà");
+            return;
+          }
         }
       }
     }
@@ -35,7 +37,7 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
       onAddItem(item);
     }
 
-    setCategory("");
+    setCategory(items.length > 0 ? items[0].name : "Autre");
     setName("");
     setUrl("");
   }
@@ -64,7 +66,10 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
         id="category"
         name="category"
         value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        onChange={(e) => {
+          setCategory(e.target.value);
+          console.log(e.target.value);
+        }}
       >
         {items.map((category, index) => (
           <option key={index} value={category.name}>
