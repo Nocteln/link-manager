@@ -1,23 +1,39 @@
 import { useState } from "react";
 
-export default function AddForm({ onAddItem, items }) {
+export default function AddForm({ onAddItem, items, onAddCat }) {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [category, setCategory] = useState(
-    items[0].name ? items[0].name : "Autre"
+    items.length > 0 ? items[0].name : "Autre"
   );
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (name === "" || url === "" || category === "") {
-      alert("Veuillez remplir tous les champs");
-      return;
-    }
+    // if (name === "" || url === "" || category === "") {
+    //   alert("Veuillez remplir tous les champs");
+    //   return;
+    // }
 
     const item = { name: category, site: { url, name } };
 
-    onAddItem(item);
+    for (let i = 0; i < items.length; i++) {
+      for (let k = 0; k < items[i].sites.length; k++) {
+        if (items[i].name === category && items[i].sites[k].url === url) {
+          alert("Ce lien existe déjà");
+          return;
+        }
+      }
+    }
+
+    if (category === "Ajouter") {
+      const t = prompt("Nom de la catégorie :");
+      if (t === null) return;
+      const cat = { name: t, sites: [{ url, name }] };
+      onAddCat(cat);
+    } else {
+      onAddItem(item);
+    }
 
     setCategory("");
     setName("");
@@ -43,7 +59,7 @@ export default function AddForm({ onAddItem, items }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <label htmlFor="category">Séléctionner une categorie :</label>
+      <label htmlFor="category">Sélectionner une catégorie :</label>
       <select
         id="category"
         name="category"
@@ -55,7 +71,7 @@ export default function AddForm({ onAddItem, items }) {
             {category.name}
           </option>
         ))}
-        <option value="autre">Autre</option>
+        <option value="Ajouter">Ajouter</option>
       </select>
       <button type="submit">Ajouter</button>
     </form>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import AddForm from "./components/AddForm";
+import { LeftContainer, RightContainer } from "./components/Containers";
 
 let cat = [
   {
@@ -11,20 +12,20 @@ let cat = [
       { name: "Google News", url: "https://news.google.com" },
     ],
   },
-  {
-    name: "Facebook",
-    sites: [
-      { name: "Facebook Homepage", url: "https://www.facebook.com" },
-      { name: "Facebook Messenger", url: "https://www.messenger.com" },
-    ],
-  },
-  {
-    name: "Twitter",
-    sites: [
-      { name: "Twitter Homepage", url: "https://twitter.com" },
-      { name: "TweetDeck", url: "https://tweetdeck.twitter.com" },
-    ],
-  },
+  // {
+  //   name: "Facebook",
+  //   sites: [
+  //     { name: "Facebook Homepage", url: "https://www.facebook.com" },
+  //     { name: "Facebook Messenger", url: "https://www.messenger.com" },
+  //   ],
+  // },
+  // {
+  //   name: "Twitter",
+  //   sites: [
+  //     { name: "Twitter Homepage", url: "https://twitter.com" },
+  //     { name: "TweetDeck", url: "https://tweetdeck.twitter.com" },
+  //   ],
+  // },
 ];
 
 export default function App() {
@@ -44,25 +45,36 @@ export default function App() {
   }
 
   function handleDeleteItem(item, cat) {
-    console.log(item);
     setItems((prevItems) => {
-      for (let i = 0; i < prevItems.length; i++) {
-        if (cat.name === prevItems[i].name) {
-          console.log("Item ", prevItems[i]);
-          prevItems[i].sites = prevItems[i].sites.filter(
-            (site) => site.url !== item.url
-          );
-        }
-      }
-      return prevItems;
+      return prevItems
+        .map((category) => {
+          if (category.name === cat.name) {
+            const newSites = category.sites.filter(
+              (site) => site.url !== item.url
+            );
+            // Si la catégorie n'a plus de sites, ne la retournez pas
+            if (newSites.length === 0) return null;
+            return { ...category, sites: newSites };
+          }
+          return category;
+        })
+        .filter(Boolean); // Supprimez les catégories nulles
     });
+  }
+
+  function handleAddCat(cat) {
+    setItems((prev) => [...prev, cat]);
   }
 
   return (
     <div className="App">
       <NavBar />
       <div className="page">
-        <LeftContainer onAddItem={handleAddItems} items={items} />
+        <LeftContainer
+          onAddItem={handleAddItems}
+          items={items}
+          onAddCat={handleAddCat}
+        />
         <RightContainer items={items} onDeleteItem={handleDeleteItem} />
       </div>
     </div>
@@ -85,27 +97,7 @@ function ShearchForm() {
   );
 }
 
-function LeftContainer({ onAddItem, items }) {
-  return (
-    <div className="leftContainer">
-      <AddForm onAddItem={onAddItem} items={items} />
-    </div>
-  );
-}
-
-function RightContainer({ items, onDeleteItem }) {
-  return (
-    <div className="rightContainer">
-      {items.map((cat) => {
-        return (
-          <Categorie cat={cat} key={cat.name} onDeleteItem={onDeleteItem} />
-        );
-      })}
-    </div>
-  );
-}
-
-function Categorie({ cat, onDeleteItem }) {
+export function Categorie({ cat, onDeleteItem }) {
   return (
     <div className="categorie">
       <h2>{cat.name}</h2>
