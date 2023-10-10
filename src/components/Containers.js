@@ -1,10 +1,18 @@
 import AddForm from "./AddForm";
 import Categorie from "./Categorie";
+import TriForm from "./TriForm";
 
-export function LeftContainer({ onAddItem, items, onAddCat }) {
+export function LeftContainer({
+  onAddItem,
+  items,
+  onAddCat,
+  onSort,
+  onSortList,
+}) {
   return (
     <div className="leftContainer">
       <AddForm onAddItem={onAddItem} items={items} onAddCat={onAddCat} />
+      <TriForm items={items} onSort={onSort} onSortList={onSortList} />
     </div>
   );
 }

@@ -6,9 +6,21 @@ let cat = [
   {
     name: "Google",
     sites: [
-      { name: "Google Search", url: "https://www.google.com" },
-      { name: "Gmail", url: "https://mail.google.com" },
-      { name: "Google News", url: "https://news.google.com" },
+      {
+        name: "Google Search",
+        url: "https://www.google.com",
+        timestamp: 1696961228189,
+      },
+      {
+        name: "Gmail",
+        url: "https://mail.google.com",
+        timestamp: 1696961228190,
+      },
+      {
+        name: "Google News",
+        url: "https://news.google.com",
+        timestamp: 1696961229000,
+      },
     ],
   },
   // {
@@ -32,9 +44,10 @@ export default function App() {
   //   localStorage.setItem("items", JSON.stringify(cat));
   // }
   const [items, setItems] = useState(
-    localStorage.getItem("item")
-      ? JSON.parse(localStorage.getItem("items"))
-      : []
+    cat
+    // localStorage.getItem("item")
+    // JSON.parse(localStorage.getItem("items"))
+    //   : []
   );
   console.log(items);
   function handleAddItems(item) {
@@ -46,10 +59,10 @@ export default function App() {
             sites: [...category.sites, item.site],
           };
         }
+        // localStorage.setItem("items", JSON.stringify(category));
         return category;
       });
     });
-    localStorage.setItem("items", JSON.stringify(items));
   }
 
   function handleDeleteItem(item, cat) {
@@ -62,7 +75,7 @@ export default function App() {
             );
             // Si la catégorie n'a plus de sites, ne la retournez pas
             if (newSites.length === 0) {
-              localStorage.setItem("items", "null");
+              // localStorage.setItem("items", "null");
               return null;
             }
             return { ...category, sites: newSites };
@@ -71,12 +84,64 @@ export default function App() {
         })
         .filter(Boolean); // Supprimez les catégories nulles
     });
-    localStorage.setItem("items", JSON.stringify(items));
+    // localStorage.setItem("items", JSON.stringify(items));
   }
 
   function handleAddCat(cat) {
     setItems((prev) => [...prev, cat]);
-    localStorage.setItem("items", JSON.stringify(items));
+  }
+
+  function handleSortCat(sortBy) {
+    if (sortBy === "a-z") {
+      const sortedItems = items
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+      setItems(sortedItems);
+    } else if (sortBy === "z-a") {
+      const sortedItems = items
+        .slice()
+        .sort((a, b) => b.name.localeCompare(a.name));
+      setItems(sortedItems);
+    } else if (sortBy === "date") {
+      const sortedItems = items
+        .slice()
+        .sort((a, b) => a.timestamp - b.timestamp);
+      setItems(sortedItems);
+    }
+  }
+
+  // function handleSortList(sortBy) {
+  //   if (sortBy === "a-z") {
+  //     const sortedItems = items
+  //       .slice()
+  //       .sort((a, b) => a.sites.name.localeCompare(b.sites.name));
+  //     setItems(sortedItems);
+  //   } else if (sortBy === "z-a") {
+  //     const sortedItems = items
+  //       .slice()
+  //       .sort((a, b) => b.sites.name.localeCompare(a.sites.name));
+  //     setItems(sortedItems);
+  //   } else if (sortBy === "date") {
+  //     const sortedItems = items
+  //       .slice()
+  //       .sort((a, b) => a.timestamp - b.timestamp);
+  //     setItems(sortedItems);
+  //   }
+  // }
+
+  function handleSortList(sortBy) {
+    const sortedItems = items.slice().map((cat) => {
+      if (sortBy === "a-z") {
+        cat.sites.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortBy === "z-a") {
+        cat.sites.sort((a, b) => b.name.localeCompare(a.name));
+      } else if (sortBy === "date") {
+        cat.sites.sort((a, b) => a.timestamp - b.timestamp);
+      }
+      return cat;
+    });
+
+    setItems(sortedItems);
   }
 
   return (
@@ -87,6 +152,8 @@ export default function App() {
           onAddItem={handleAddItems}
           items={items}
           onAddCat={handleAddCat}
+          onSort={handleSortCat}
+          onSortList={handleSortList}
         />
         <RightContainer items={items} onDeleteItem={handleDeleteItem} />
       </div>

@@ -4,7 +4,7 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [category, setCategory] = useState(
-    items.length > 0 ? items[0].name : "Autre"
+    items.length > 0 ? items[0].name : "Ajouter"
   );
 
   function handleSubmit(e) {
@@ -15,15 +15,16 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
       return;
     }
 
-    const item = { name: category, site: { url, name } };
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
 
-    if (items !== "[]") {
-      for (let i = 0; i < items.length; i++) {
-        for (let k = 0; k < items[i].sites.length; k++) {
-          if (items[i].name === category && items[i].sites[k].url === url) {
-            alert("Ce lien existe déjà");
-            return;
-          }
+    const item = { name: category, site: { url, name, timestamp } };
+
+    for (let i = 0; i < items.length; i++) {
+      for (let k = 0; k < items[i].sites.length; k++) {
+        if (items[i].name === category && items[i].sites[k].url === url) {
+          alert("Ce lien existe déjà");
+          return;
         }
       }
     }
@@ -33,8 +34,9 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
       if (t === null) return;
       const cat = { name: t, sites: [{ url, name }] };
       onAddCat(cat);
+      console.log((items) => [...items, item]);
     } else {
-      onAddItem(item);
+      onAddItem((items) => [...items, item]);
     }
 
     setCategory(items.length > 0 ? items[0].name : "Autre");
