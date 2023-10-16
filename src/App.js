@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./App.css";
 import { LeftContainer, RightContainer } from "./components/Containers";
-
 let cat = [
   {
     name: "Google",
@@ -26,15 +25,7 @@ let cat = [
 ];
 
 export default function App() {
-  // if (!localStorage.getItem("items")) {
-  //   localStorage.setItem("items", JSON.stringify(cat));
-  // }
-  const [items, setItems] = useState(
-    cat
-    // localStorage.getItem("item")
-    // JSON.parse(localStorage.getItem("items"))
-    //   : []
-  );
+  const [items, setItems] = useState(cat);
   function handleAddItems(item) {
     setItems((prevItems) => {
       return prevItems.map((category) => {
@@ -44,7 +35,6 @@ export default function App() {
             sites: [...category.sites, item.site],
           };
         }
-        // localStorage.setItem("items", JSON.stringify(category));
         return category;
       });
     });
@@ -60,7 +50,6 @@ export default function App() {
             );
             // Si la catégorie n'a plus de sites, ne la retournez pas
             if (newSites.length === 0) {
-              // localStorage.setItem("items", "null");
               return null;
             }
             return { ...category, sites: newSites };
@@ -69,14 +58,13 @@ export default function App() {
         })
         .filter(Boolean); // Supprimez les catégories nulles
     });
-    // localStorage.setItem("items", JSON.stringify(items));
   }
 
   function handleAddCat(cat) {
     setItems((prev) => [...prev, cat]);
   }
 
-  function handleSortCat(sortBy) {
+  function handleSortt(sortBy) {
     if (sortBy === "a-z") {
       const sortedItems = items
         .slice()
@@ -95,26 +83,7 @@ export default function App() {
     }
   }
 
-  // function handleSortList(sortBy) {
-  //   if (sortBy === "a-z") {
-  //     const sortedItems = items
-  //       .slice()
-  //       .sort((a, b) => a.sites.name.localeCompare(b.sites.name));
-  //     setItems(sortedItems);
-  //   } else if (sortBy === "z-a") {
-  //     const sortedItems = items
-  //       .slice()
-  //       .sort((a, b) => b.sites.name.localeCompare(a.sites.name));
-  //     setItems(sortedItems);
-  //   } else if (sortBy === "date") {
-  //     const sortedItems = items
-  //       .slice()
-  //       .sort((a, b) => a.timestamp - b.timestamp);
-  //     setItems(sortedItems);
-  //   }
-  // }
-
-  function handleSortList(sortBy) {
+  function handleSort(sortBy) {
     const sortedItems = items.slice().map((cat) => {
       if (sortBy === "a-z") {
         cat.sites.sort((a, b) => a.name.localeCompare(b.name));
@@ -137,8 +106,7 @@ export default function App() {
           onAddItem={handleAddItems}
           items={items}
           onAddCat={handleAddCat}
-          onSort={handleSortCat}
-          onSortList={handleSortList}
+          onSort={handleSort}
         />
         <RightContainer items={items} onDeleteItem={handleDeleteItem} />
       </div>
