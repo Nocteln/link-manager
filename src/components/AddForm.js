@@ -23,20 +23,21 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
     for (let i = 0; i < items.length; i++) {
       for (let k = 0; k < items[i].sites.length; k++) {
         if (items[i].name === category && items[i].sites[k].url === url) {
-          alert("Ce lien existe déjà");
+          alert("Ce lien existe déjà dans cette catégorie");
           return;
         }
       }
     }
 
     if (category === "Ajouter") {
-      const t = prompt("Nom de la catégorie :");
-      if (t === null) return;
+      let t = prompt("Nom de la catégorie :");
+      if (t === null || t === "") {
+        alert("Veuillez saisir un nom pour la catégorie");
+      }
       const cat = { name: t, sites: [{ url, name }] };
       onAddCat(cat);
-      console.log((items) => [...items, item]);
     } else {
-      onAddItem((items) => [...items, item]);
+      onAddItem(item);
     }
 
     setCategory(items.length > 0 ? items[0].name : "Autre");
@@ -70,7 +71,6 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
         value={category}
         onChange={(e) => {
           setCategory(e.target.value);
-          console.log(e.target.value);
         }}
       >
         {items.map((category, index) => (

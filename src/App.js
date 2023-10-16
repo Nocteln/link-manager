@@ -23,20 +23,6 @@ let cat = [
       },
     ],
   },
-  // {
-  //   name: "Facebook",
-  //   sites: [
-  //     { name: "Facebook Homepage", url: "https://www.facebook.com" },
-  //     { name: "Facebook Messenger", url: "https://www.messenger.com" },
-  //   ],
-  // },
-  // {
-  //   name: "Twitter",
-  //   sites: [
-  //     { name: "Twitter Homepage", url: "https://twitter.com" },
-  //     { name: "TweetDeck", url: "https://tweetdeck.twitter.com" },
-  //   ],
-  // },
 ];
 
 export default function App() {
@@ -49,7 +35,6 @@ export default function App() {
     // JSON.parse(localStorage.getItem("items"))
     //   : []
   );
-  console.log(items);
   function handleAddItems(item) {
     setItems((prevItems) => {
       return prevItems.map((category) => {
