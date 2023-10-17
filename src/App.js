@@ -1,3 +1,10 @@
+// Pour le localStorange : utiliser une fonction a l'interieur
+
+  // const [watched, setWatched] = useState(function () {
+  //   const storedValue = localStorage.getItem("watched");
+  //   return JSON.parse(storedValue);
+  // });
+
 import { useState } from "react";
 import "./App.css";
 import { LeftContainer, RightContainer } from "./components/Containers";
