@@ -5,6 +5,14 @@
   //   return JSON.parse(storedValue);
   // });
 
+
+  // useEffect(
+  //   function () {
+  //     localStorage.setItem("watched", JSON.stringify(watched));
+  //   },
+  //   [watched]
+  // );
+
 import { useState } from "react";
 import "./App.css";
 import { LeftContainer, RightContainer } from "./components/Containers";
