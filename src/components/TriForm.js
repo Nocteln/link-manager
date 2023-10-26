@@ -4,12 +4,12 @@ export default function TriForm({ items, onSort, onSortList }) {
   const [sortByCat, setSortByCat] = useState("a-z");
   const [sortByList, setSortByList] = useState("a-z");
 
-  useEffect(() => {
-    onSort(sortByCat);
-  }, [sortByCat]);
-  useEffect(() => {
-    onSortList(sortByList);
-  }, [sortByList]);
+  // useEffect(() => {
+  //   onSort(sortByCat);
+  // }, [sortByCat]);
+  // useEffect(() => {
+  //   onSortList(sortByList);
+  // }, [sortByList]);
   return (
     <div className="tri">
       <h3>Classer par :</h3>

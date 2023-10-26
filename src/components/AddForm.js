@@ -34,12 +34,12 @@ export default function AddForm({ onAddItem, items, onAddCat }) {
       if (t === null) return;
       const cat = { name: t, sites: [{ url, name }] };
       onAddCat(cat);
-      console.log((items) => [...items, item]);
     } else {
+      console.log(item);
       onAddItem((items) => [...items, item]);
     }
 
-    setCategory(items.length > 0 ? items[0].name : "Autre");
+    setCategory(items.length > 0 ? items[0].name : "Ajouter");
     setName("");
     setUrl("");
   }
